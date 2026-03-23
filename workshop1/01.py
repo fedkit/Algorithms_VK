@@ -3,7 +3,6 @@ class ListNode:
         self.val = x
         self.next = None
 
-
 def append_list(head, value):
     if head is None:
         return ListNode(value)
@@ -43,12 +42,18 @@ def solution(headA, headB):
     if B2:
         get_tail(B2).next = A2
 
-    pA, pB = A1, B2
+    point1, point2 = A1, B2
 
-    while pA and pB:
-        if pA.val == pB.val:
-            return pA
-        pA = pA.next
-        pB = pB.next
+    while point1 and point2:
+        if point1.val == point2.val:
+            t1, t2 = point1, point2
+            while t1 and t2 and t1.val == t2.val:
+                t1 = t1.next
+                t2 = t2.next
+            if t1 is None and t2 is None:
+                return point1
+        point1 = point1.next
+        point2 = point2.next
 
     return None
+
