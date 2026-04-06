@@ -57,3 +57,66 @@ def solution(headA, headB):
 
     return None
 
+
+
+
+
+def build_list(arr):
+    head = None
+    for x in arr:
+        head = append_list(head, x)
+    return head
+
+
+def run_tests():
+    tests = [
+        # (listA, listB, expected)
+
+        ([1,2,3,4,5], [9,8,3,4,5], 3),
+        ([1,2,3], [4,5,6], None),
+        ([1,2,3], [1,2,3], 1),
+        ([7], [7], 7),
+        ([7], [8], None),
+
+        ([1,2,3,4,5], [4,5], 4),
+        ([4,5], [1,2,3,4,5], 4),
+        ([1,2,3,4,5], [2,3,4,5], 2),
+        ([1,2,3,4,5], [5], 5),
+        ([1,2,3,4,5], [6,5], 5),
+
+        ([1,2,3,4,5], [8,9,5], 5),
+        ([1,2,3,4], [0,3,4], 3),
+        ([1,2,3,4], [5,6,3,4], 3),
+
+        ([1,2,3,4,5], [3,4,6], None),
+
+        ([1,1,1,2,3], [9,1,2,3], 1),
+        ([2,2,2,2], [2,2], 2),
+        ([1,2,1,2,3], [1,2,3], 1),
+
+        ([], [1,2,3], None),
+        ([], [], None),
+        ([1, 2, 3], [4, 2, 3], 2),
+    ]
+
+    for i, (a, b, expected) in enumerate(tests, 1):
+        headA = build_list(a)
+        headB = build_list(b)
+
+        result = solution(headA, headB)
+
+        result_val = result.val if result else None
+
+        assert result_val == expected, f"Test {i} failed: got {result_val}, expected {expected}"
+
+    print("All tests passed!")
+
+
+run_tests()
+
+
+headA = build_list([4, 2, 3])
+headB = build_list([1, 2, 3])
+
+result = solution(headA, headB)
+print(result.val)
