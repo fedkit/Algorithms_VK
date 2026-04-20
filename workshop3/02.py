@@ -1,61 +1,57 @@
-from collections import deque
-
-class TreeNode:
-    def __init__(self, val, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
-
-class BinaryTree:
+class MinHeap:
     def __init__(self):
-        self.root = None
+        self.data = []
 
-    def build_tree(self, arr):
-        if not arr or arr[0] is None:
-            self.root = None
-            return
+    def push(self, x):
+        self.data.append(x)
+        i = len(self.data) - 1
 
-        self.root = TreeNode(arr[0])
-        queue = deque([self.root])
-        i = 1
+        while i > 0:
+            p = (i - 1) // 2
+            if self.data[p] <= self.data[i]:
+                break
+            self.data[p], self.data[i] = self.data[i], self.data[p]
+            i = p
 
-        while i < len(arr):
-            current = queue.popleft()
+    def pop(self):
+        if not self.data:
+            return None
 
-            if i < len(arr) and arr[i] is not None:
-                current.left = TreeNode(arr[i])
-                queue.append(current.left)
-            i += 1
+        self.data[0], self.data[-1] = self.data[-1], self.data[0]
+        res = self.data.pop()
 
-            if i < len(arr) and arr[i] is not None:
-                current.right = TreeNode(arr[i])
-                queue.append(current.right)
-            i += 1
+        i = 0
+        n = len(self.data)
 
-    def bfs(self):
-        if not self.root:
-            return []
+        while True:
+            l = 2 * i + 1
+            r = 2 * i + 2
+            m = i
 
-        q = deque([self.root])
-        answer = []
+            if l < n and self.data[l] < self.data[m]:
+                m = l
+            if r < n and self.data[r] < self.data[m]:
+                m = r
 
-        while q:
-            current = q.popleft()
-            answer.append(current.val)
+            if m == i:
+                break
 
-            if current.left:
-                q.append(current.left)
+            self.data[i], self.data[m] = self.data[m], self.data[i]
+            i = m
 
-            if current.right:
-                q.append(current.right)
+        return res
 
-        return answer
+    def peek(self):
+        return self.data[0] if self.data else None
 
+def solve(nums, k):
+    heap = MinHeap()
 
-        
-    
-tree_test = BinaryTree()
-tree_test.build_tree([1, 2, 3, 4, 5, None, 6])
+    for i in nums:
+        heap.push(i)
+        if len(heap.data) > k:
+            heap.pop()
 
-print(tree_test.bfs())
+    return heap.peek()
+
+print(solve([3, 2, 3, 1, 2, 4, 5, 5, 6], 4))
